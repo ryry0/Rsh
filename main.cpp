@@ -1,7 +1,9 @@
 #include <iostream>
 #include <csignal>
 #include <parser.h>
+#include <unistd.h>
 
+void PrintPrompt();
 void SigIntHandler (int parameter) {
   exit(0);
 }
@@ -13,7 +15,7 @@ int main() {
   Parser *command_parser = new Parser(' ');
 
   while (1) {
-    std::cout << ">";
+    PrintPrompt();
     getline(std::cin, input);
     command_parser->Parse(input);
     tokens = command_parser->GetTokens();
@@ -26,4 +28,20 @@ int main() {
 
   delete command_parser;
   return 0;
-}
+} //end main
+
+/*
+ * PrintPrompt()
+ * Grabs the directory and prints it.
+ */
+void PrintPrompt() {
+  char buffer[100];
+  std::vector<std::string> tokenized_path;
+  Parser path_parser('/');
+
+  getcwd(buffer, 100);
+  path_parser.Parse(buffer);
+  tokenized_path = path_parser.GetTokens();
+
+  std::cout << tokenized_path.back() << " >";
+} //end printprompt
