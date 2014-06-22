@@ -6,6 +6,9 @@ Parser::Parser() {
 Parser::Parser(const char delimiter) : delimiter_(delimiter) {
 }
 
+Parser::~Parser() {
+}
+
 void Parser::SetDelimiter(const char delimiter) {
   delimiter_ = delimiter;
 }
