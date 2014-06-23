@@ -1,32 +1,119 @@
+/*
+ * Author: Ryan - David Reyes
+ */
+//std includes
 #include <iostream>
 #include <csignal>
-#include <parser.h>
 #include <unistd.h>
 
+//other includes
+#include <parser.h>
+#include <history.h>
+#include <getch.h>
+
+const char CTRL_C      = 3;
+const char ARROW_IND   = 27; //27 precedes arrow keys
+const char ARROW_UP    = 'A';
+const char ARROW_DOWN  = 'B';
+const char ARROW_RIGHT = 'C';
+const char ARROW_LEFT  = 'D';
+
+const size_t HISTORY_SIZE = 10;
+const std::string HISTORY_FILE = "history.dat";
+
 void PrintPrompt();
+bool InterpretCommand(const std::vector<std::string> &command_tokens);
+
 void SigIntHandler (int parameter) {
-  exit(0);
 }
 
 int main() {
-  signal (SIGINT, SigIntHandler);
-  std::string input;
+  signal(SIGINT, SigIntHandler);
+
+  bool        running = true;
+  std::string input_buffer;
+  char        input_char;
+  size_t      cursor_position = 0;
+  Parser      command_parser(' ');
+  History     command_history(HISTORY_SIZE);
   std::vector<std::string> tokens;
-  Parser *command_parser = new Parser(' ');
 
-  while (1) {
+  command_history.LoadHistory(HISTORY_FILE);
+
+  while (running) {
     PrintPrompt();
-    getline(std::cin, input);
-    command_parser->Parse(input);
-    tokens = command_parser->GetTokens();
+    do {
+      input_char = term::getch();
 
-    for (auto i : tokens)
-      std::cout << i << "\n";
+      //check for special characters
+      switch (input_char) {
+        case CTRL_C:
+          input_buffer.clear();
+          std::cout << "\n";
+          break;
 
-    command_parser->ClearTokens();
+        case '\b':
+        case 127:
+          if (cursor_position > 0) {
+            std::cout << "\b \b";
+            --cursor_position;
+          }
+          if (!input_buffer.empty()) {
+            input_buffer.pop_back();
+          }
+          break;
+
+        case ARROW_IND: //arrow indicator
+        case 79:
+          break;
+        case '\n': //newline character will not be appended.
+          std::cout << "\n";
+          break;
+
+        case ARROW_UP:
+          input_buffer = command_history.GetPrevious();
+          //clear the screen to prompt
+          for (unsigned int i = 0; i < cursor_position; i++)
+            std::cout << "\b \b";
+          cursor_position = input_buffer.length();//make sure backspace works.
+          std::cout << input_buffer;
+          break;
+
+        case ARROW_DOWN:
+          input_buffer = command_history.GetNext();
+          //clear the screen to prompt
+          for (unsigned int i = 0; i < cursor_position; i++)
+            std::cout << "\b \b";
+          cursor_position = input_buffer.length();//make sure backspace works.
+          std::cout << input_buffer;
+          break;
+
+        default: //add it to the input string
+          std::cout << input_char;
+          input_buffer += input_char;
+          cursor_position ++;
+          break;
+      }
+    } while (input_char != '\n' && input_char != 3);
+
+    //store the history
+    command_history.AddToHistory(input_buffer);
+
+    //parse the string
+    command_parser.Parse(input_buffer);
+    tokens = command_parser.GetTokens();
+
+    //interpret the command
+    if (InterpretCommand(tokens) == false)
+      running = false;
+
+    command_parser.ClearTokens();
+    input_buffer.clear();
+    cursor_position = 0;
   }
 
-  delete command_parser;
+  command_history.WriteHistoryToFile(HISTORY_FILE);
+
   return 0;
 } //end main
 
@@ -45,3 +132,15 @@ void PrintPrompt() {
 
   std::cout << tokenized_path.back() << " >";
 } //end printprompt
+
+bool InterpretCommand(const std::vector<std::string> &command_tokens) {
+  if (!command_tokens.empty()) { //check if its empty before doing anything
+    //for (auto i : command_tokens)
+    //std::cout << i << "\n";
+
+    //std::cout << command_tokens[0];
+    if (command_tokens[0] == "exit")
+      return false;
+  }
+  return true;
+} //end InterpretCommand;
