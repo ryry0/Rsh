@@ -1,3 +1,6 @@
+/*
+ * Author: Ryan - David Reyes
+ */
 #ifndef PARSER_H_
 #define PARSER_H_
 
@@ -19,6 +22,7 @@ class Parser {
     void Parse       (const std::string input);
     void CopyTokens  (std::vector<std::string> &destination);
     void ClearTokens ();
+    void DumpTokens  ();
 
     const std::vector<std::string> &GetTokens() const;
 

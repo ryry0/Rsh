@@ -1,3 +1,7 @@
+/*
+ * Author: Ryan - David Reyes
+ */
+#include <iostream>
 #include <parser.h>
 
 Parser::Parser() {
@@ -19,13 +23,18 @@ void Parser::SetDelimiter(const char delimiter) {
  * to parse the buffer into tokens.
  */
 void Parser::Parse(const std::string input) {
-  std::istringstream buffer(input);
+  //create a string out of the input with no newlines
+  std::string stripped_string(input);
+  stripped_string.erase(std::remove(stripped_string.begin(),
+        stripped_string.end(), '\n'), stripped_string.end());
+
+  std::istringstream buffer(stripped_string);
   for (std::string token; getline(buffer, token, delimiter_);)
     tokens_.push_back(token);
 } //end Parse
 
 void Parser::CopyTokens(std::vector<std::string> &destination) {
-  std::copy(tokens_.begin(), tokens_.end(), destination.begin());
+  destination = tokens_;
 }
 
 const std::vector<std::string> &Parser::GetTokens() const {
@@ -35,3 +44,9 @@ const std::vector<std::string> &Parser::GetTokens() const {
 void Parser::ClearTokens() {
   tokens_.clear();
 }
+
+void Parser::DumpTokens() {
+  for (auto i : tokens_)
+    std::cout << i << "\n";
+}
+
