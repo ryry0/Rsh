@@ -37,6 +37,7 @@ class Manager {
   private: //builtin functions:
     int cd();
     int echo();
+    int pwd();
 
   private:
     fsu::HashTable<KeyType, DataType, HashType> builtin_command_table_;
