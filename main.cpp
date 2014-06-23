@@ -76,6 +76,7 @@ int main() {
           }
           break;
 
+        case '\t': //tab
         case ARROW_IND: //arrow indicator
         case 79:
           break;
@@ -162,20 +163,17 @@ void PrintPrompt() {
   std::cout << ANSI_COLOR_BLUE << " " << uid_char << ANSI_COLOR_RESET << ">";
 } //end printprompt
 
-int InterpretCommand(const std::vector<std::string> &command_tokens) {
-
-  return true;
-} //end InterpretCommand;
-
 int ExecuteExternalCommand(const std::vector<std::string> &command_tokens,
     pid_t &child_pid) {
   int status = -1;
   int exec_return;
   std::vector<char *> c_string_tokens;
 
-  for (unsigned int i = 0; i < command_tokens.size(); ++i)
-    c_string_tokens.push_back(const_cast<char *>(command_tokens[i].c_str()));
-  c_string_tokens.push_back(NULL);
+  c_string_tokens.reserve(command_tokens.size()+1);
+  for (auto i = command_tokens.begin(); i != command_tokens.end(); ++i)
+    c_string_tokens.push_back(const_cast<char*>(&(*i)[0]));
+        //const_cast<char *>(command_tokens[i].c_str()));
+  c_string_tokens.push_back(NULL); //has to end with null pointer
 
   //for (auto i : c_string_tokens)
     //std::cout << i;
