@@ -21,6 +21,7 @@ class History {
     void ResetHistoryPosition();
     std::string GetPrevious();
     std::string GetNext    ();
+    void Dump              ();
 
   private:
     size_t history_max_size_;

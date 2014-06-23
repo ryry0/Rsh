@@ -100,3 +100,11 @@ std::string History::GetNext() {
 void History::ResetHistoryPosition() {
   history_position_ = history_.rbegin();
 }
+
+void History::Dump() {
+  int history_counter = 1;
+  if (!history_.empty()) {
+  for (auto i = history_.rbegin(); i != history_.rend(); ++i)
+    std::cout << " " << history_counter++ << "\t" << *i << "\n";
+  }
+}
