@@ -123,6 +123,7 @@ int main() {
  */
 void PrintPrompt() {
   char buffer[100];
+  char uid_char;
   std::vector<std::string> tokenized_path;
   Parser path_parser('/');
 
@@ -130,7 +131,12 @@ void PrintPrompt() {
   path_parser.Parse(buffer);
   tokenized_path = path_parser.GetTokens();
 
-  std::cout << tokenized_path.back() << " >";
+  if (getuid() != 0)
+    uid_char = '%';
+  else
+    uid_char = '#';
+
+  std::cout << tokenized_path.back() <<" " << uid_char << ">";
 } //end printprompt
 
 bool InterpretCommand(const std::vector<std::string> &command_tokens) {
