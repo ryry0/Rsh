@@ -12,6 +12,7 @@
 #include <getch.h>
 #include <builtin.h>
 
+#include <ansicodes.h>
 #include <xstring.cpp>
 #include <primes.cpp>
 #include <bitvect.cpp>
@@ -142,7 +143,8 @@ void PrintPrompt() {
   else
     uid_char = '#';
 
-  std::cout << tokenized_path.back() <<" " << uid_char << ">";
+  std::cout << ANSI_COLOR_CYAN << tokenized_path.back();
+  std::cout << ANSI_COLOR_BLUE <<" " << uid_char << ANSI_COLOR_RESET << ">";
 } //end printprompt
 
 bool InterpretCommand(const std::vector<std::string> &command_tokens) {
