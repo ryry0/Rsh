@@ -10,6 +10,12 @@
 #include <parser.h>
 #include <history.h>
 #include <getch.h>
+#include <builtin.h>
+
+#include <xstring.cpp>
+#include <primes.cpp>
+#include <bitvect.cpp>
+#include <hashfunctions.cpp>
 
 const char CTRL_C      = 3;
 const char ARROW_IND   = 27; //27 precedes arrow keys
@@ -140,6 +146,7 @@ void PrintPrompt() {
 } //end printprompt
 
 bool InterpretCommand(const std::vector<std::string> &command_tokens) {
+  static builtin::Manager builtin_manager;
   if (!command_tokens.empty()) { //check if its empty before doing anything
     //for (auto i : command_tokens)
     //std::cout << i << "\n";
@@ -147,6 +154,10 @@ bool InterpretCommand(const std::vector<std::string> &command_tokens) {
     //std::cout << command_tokens[0];
     if (command_tokens[0] == "exit")
       return false;
+    else if (builtin_manager.Execute(command_tokens))
+      return true;
+    else
+      std::cout << "rsh: command not found: " << command_tokens[0] << "\n";
   }
   return true;
 } //end InterpretCommand;
