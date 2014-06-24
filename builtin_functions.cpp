@@ -21,9 +21,17 @@ Manager::Manager() {
 }
 
 int Manager::cd() {
-  int return_value = chdir(token_list_[1].c_str());
-  if (return_value == -1)
-    std::cout << "cd: no such file or directory: " << token_list_[1] << "\n";
+  int return_value = 0;
+  char * home_path;
+  if (token_list_.size() > 1) {
+    return_value = chdir(token_list_[1].c_str());
+    if (return_value == -1)
+      std::cout << "cd: no such file or directory: " << token_list_[1] << "\n";
+  }
+  else {
+    home_path = getenv("HOME");
+    return_value = chdir(home_path);
+  }
   return return_value;
 }
 
@@ -42,10 +50,12 @@ int Manager::pwd() {
 }
 
 int Manager::exit() {
-  int return_value;
+  int return_value = 0;
   exit_flag_ = true;
-  std::stringstream buffer(token_list_[1]);
-  buffer >> return_value;
+  if (token_list_.size() > 1) {
+    std::stringstream buffer(token_list_[1]);
+    buffer >> return_value;
+  }
   return return_value;
 }
 

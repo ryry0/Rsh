@@ -78,7 +78,6 @@ int main() {
 
         case '\t': //tab
         case ARROW_IND: //arrow indicator
-        case 79:
           break;
         case '\n': //newline character will not be appended.
           std::cout << "\n";
