@@ -24,6 +24,7 @@ namespace builtin
 {
 class Manager {
   typedef std::string                  KeyType;
+  //sets the datatype to a function pointer that returns an int.
   typedef int                        (Manager::*DataType)();
   typedef hashclass::KISS < KeyType >  HashType;
 
@@ -34,6 +35,7 @@ class Manager {
     bool Execute(const std::vector<std::string> &tokens);
     int GetReturnValue() const {return return_value_;}
     bool GetExitFlag   () const {return exit_flag_;}
+    //sets a flag that switches whether history will be read
     bool ReadHistory   () {
       if (history_flag_ == true) {
       history_flag_ = false;

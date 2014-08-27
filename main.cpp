@@ -107,7 +107,7 @@ int main() {
           cursor_position ++;
           break;
       }
-    } while (input_char != '\n' && input_char != 3);
+    } while (input_char != '\n' && input_char != CTRL_C);
 
     //store the history
     command_history.AddToHistory(input_buffer);
@@ -169,6 +169,8 @@ int ExecuteExternalCommand(const std::vector<std::string> &command_tokens,
   std::vector<char *> c_string_tokens;
 
   c_string_tokens.reserve(command_tokens.size()+1);
+  //for all the tokens storedin command tokens,
+  //convert them to a c string (pointer to char) version via a constant cast.
   for (auto i = command_tokens.begin(); i != command_tokens.end(); ++i)
     c_string_tokens.push_back(const_cast<char*>(&(*i)[0]));
         //const_cast<char *>(command_tokens[i].c_str()));

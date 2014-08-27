@@ -54,7 +54,7 @@ int Manager::exit() {
   exit_flag_ = true;
   if (token_list_.size() > 1) {
     std::stringstream buffer(token_list_[1]);
-    buffer >> return_value;
+    buffer >> return_value; //extract the return value from token_list[1]
   }
   return return_value;
 }
