@@ -16,6 +16,8 @@ Manager::Manager() {
 
   builtin_command_table_.Insert("q", &Manager::exit);
   builtin_command_table_.Insert("exit", &Manager::exit);
+  builtin_command_table_.Insert("jobs", &Manager::jobs);
+  builtin_command_table_.Insert("kill", &Manager::kill);
   exit_flag_ = false;
   history_flag_ = false;
 }
@@ -61,6 +63,16 @@ int Manager::exit() {
 
 int Manager::history() {
   history_flag_ = true;
+  return 0;
+}
+
+int Manager::jobs() {
+  jobs_flag_ = true;
+  return 0;
+}
+
+int Manager::kill() {
+  kill_flag_ = true;
   return 0;
 }
 } //end namespace builtin

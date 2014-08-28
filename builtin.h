@@ -44,12 +44,29 @@ class Manager {
         return false;
     }
 
+    bool CheckJobsFlag () {
+      if (jobs_flag_ == true) {
+      jobs_flag_ = false;
+      return true;
+      } else
+        return false;
+    }
+
+    bool CheckKillFlag () {
+      if (kill_flag_ == true) {
+      kill_flag_ = false;
+      return true;
+      } else
+        return false;
+    }
   private: //builtin functions:
     int cd();
     int echo();
     int pwd();
     int history();
     int exit();
+    int jobs();
+    int kill();
 
   private:
     fsu::HashTable<KeyType, DataType, HashType> builtin_command_table_;
@@ -57,6 +74,8 @@ class Manager {
     int  return_value_;
     bool exit_flag_; //true if you want to exit
     bool history_flag_; //true if you want to read history
+    bool jobs_flag_; //true if you want to view jobs
+    bool kill_flag_; //true if you want to kill a process
 };
 
 }
