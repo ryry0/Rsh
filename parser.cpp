@@ -20,7 +20,7 @@ void Parser::SetDelimiter(const char delimiter) {
 /*
  * Parse()
  * Creates a stringstream buffer out of the input. Then uses getline
- * to parse the buffer into tokens.
+ * to parse the buffer into tokens. Strips trailing white space.
  */
 void Parser::Parse(const std::string input) {
   //create a string out of the input with no newlines

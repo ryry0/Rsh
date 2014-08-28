@@ -10,7 +10,8 @@
 #include <algorithm>
 /*
  * Parser class
- *
+ * the parser class takes an input, and seperates it into a list of tokens
+ * found in tokens_.
  */
 class Parser {
   public:
