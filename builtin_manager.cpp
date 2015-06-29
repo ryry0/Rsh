@@ -5,7 +5,7 @@ namespace builtin
 Manager::~Manager() {
 }
 
-bool Manager:: Execute(const std::vector<std::string> &tokens) {
+bool Manager::Execute(const std::vector<std::string> &tokens) {
   token_list_ = tokens;
   DataType function;
 
