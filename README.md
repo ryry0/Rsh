@@ -11,7 +11,6 @@ A simple shell. Made for fun!
 
 * exit only if there are no background processes
 * fg/bg
-* implement kill
 
 * history -s num: set history size
 * history num: return last num of commands
@@ -21,7 +20,6 @@ A simple shell. Made for fun!
 * pushd/popd
 * alias
 * | pipes
-* >& >!
 * printenv and setenv
 * if/then while for
 
